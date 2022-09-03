@@ -41,6 +41,9 @@ $Total_Lecture_count = mysqli_fetch_array($Total_Lecture)["Total Lectures"];
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>  
 
 </head>
 
@@ -94,6 +97,20 @@ $Total_Lecture_count = mysqli_fetch_array($Total_Lecture)["Total Lectures"];
 
                                    </tbody>
                                 </table>
+                                <div class="text-center">
+                                        <button type="button" id="export_button1" class="btn btn-danger btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </span>
+                                            <span class="text">Download Pdf</span>
+                                        </button>
+                                        <button type="button" id="export_button" class="btn btn-success btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-arrow-down"></i>
+                                            </span>
+                                            <span class="text">Download Excel</span>
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +142,78 @@ $Total_Lecture_count = mysqli_fetch_array($Total_Lecture)["Total Lectures"];
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+<script>
+    function html_table_to_excel(type) {
+            var c = 'Attendance.';
+            console.log(c);
 
+            var data = document.getElementById('dataTable');
+
+            var file = XLSX.utils.table_to_book(data, { sheet: "sheet1" });
+
+            XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+            XLSX.writeFile(file, c + type);
+        }
+
+        const export_button = document.getElementById('export_button');
+
+        export_button.addEventListener('click', () => {
+            html_table_to_excel('xlsx');
+        });
+
+        function generate() {  
+    var doc = new jsPDF('p', 'pt', 'letter');  
+    var htmlstring = '';  
+    var tempVarToCheckPageHeight = 0;  
+    var pageHeight = 0;  
+    pageHeight = doc.internal.pageSize.height;  
+    specialElementHandlers = {  
+        // element with id of "bypass" - jQuery style selector  
+        '#bypassme': function(element, renderer) {  
+            // true = "handled elsewhere, bypass text extraction"  
+            return true  
+        }  
+    };  
+    margins = {  
+        top: 150,  
+        bottom: 60,  
+        left: 40,  
+        right: 40,  
+        width: 600  
+    };  
+    var y = 20;  
+    doc.setLineWidth(2);  
+    doc.text(200, y = y + 30, "<?php echo $Year.' - '.$Branch.' - '.$Div.'.' ;?>");  
+    doc.text(200, y = y + 18, "<?php echo $fdate.' To '.$tdate.'.' ;?>");  
+    
+    doc.autoTable({  
+        html: '#dataTable',  
+        startY: 80,  
+        theme: 'grid',  
+        columnStyles: {  
+            0: {  
+                cellWidth: 150,  
+            },  
+            1: {  
+                cellWidth: 150,  
+            },  
+            2: {  
+                cellWidth: 150,  
+            }  
+        },  
+        styles: {  
+            minCellHeight: 20  
+        }  
+    })  
+    doc.save('Attendance.pdf');  
+}
+        const export_buttonpdf = document.getElementById('export_button1');
+
+        export_buttonpdf.addEventListener('click', () => {
+            generate();
+        });
+    </script>
 </body>
 
 </html>
