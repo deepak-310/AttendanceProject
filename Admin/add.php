@@ -43,7 +43,12 @@ require("../config/config.php");
                     <i class="zmdi zmdi-account"></i>
                 </div>
                 <div class="form-wrapper">
-                    <input type="text" name="usertype" placeholder="UserType" class="form-control">
+           
+                <select name="usertype" class="form-control">
+                    <option id="utypr" value="teacher">Teacher</option>
+                    <option id="utypr" value="admin">Admin</option>
+                 </select>
+                    <!-- <input type="text" name="usertype" placeholder="UserType" class="form-control"> -->
                     <i class="zmdi zmdi-account"></i>
                 </div>
                 <div class="form-wrapper">

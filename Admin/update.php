@@ -42,15 +42,34 @@ if(isset($_GET['updateid']))
                     <i class="zmdi zmdi-account"></i>
                 </div>
                 <div class="form-wrapper">
-                    <input type="text" name="userid" value="<?php echo $record['user_id'] ?>" placeholder="UserId" class="form-control">
+
+                    <input type="text" name="userid" readonly value="<?php echo $record['user_id'] ?>" placeholder="UserId" class="form-control">
                     <i class="zmdi zmdi-account"></i>
                 </div>
                 <div class="form-wrapper">
-                    <input type="text" name="usertype" value="<?php echo $record['user_type'] ?>" placeholder="UserType" class="form-control">
+                    <select name="usertype" class="form-control">
+                        <?php
+                        if($record['user_type']=='teacher'){
+                            ?>
+                            <option id="utypr" value="teacher" selected>Teacher</option>
+                            <option id="utypr" value="admin">Admin</option>
+                            <?php
+                        }
+                        else{
+                            ?>
+                            <option id="utypr" value="teacher" >Teacher</option>
+                            <option id="utypr" value="admin" selected>Admin</option>
+                            <?php
+                        }
+                     
+                        ?>
+                    </select>
+                    
+                    <!-- <input type="text" name="usertype" value="<?php echo $record['user_type'] ?>" placeholder="UserType" class="form-control"> -->
                     <i class="zmdi zmdi-account"></i>
                 </div>
                 <div class="form-wrapper">
-                    <input type="text" name="email" value="<?php echo $record['email_id'] ?>" placeholder="Email Address" class="form-control">
+                    <input type="text" name="email" readonly  value="<?php echo $record['email_id'] ?>" placeholder="Email Address" class="form-control">
                     <i class="zmdi zmdi-email"></i>
                 </div>
                 <!-- <div class="form-wrapper">
@@ -78,8 +97,10 @@ if(isset($_POST['submit']))
     $userId=$_POST['userid'];
     $userName=$_POST["username"];
     $utype=$_POST['usertype'];
+    $pass=$_POST['password'];
+    $uemail=$_POST['email'];
   
-    $query="update users set username='$userName' where user_id=$userId";
+    $query="update users set username='$userName',password='$pass' where user_id=$userId";
     mysqli_query($con,$query);
     header("location:user.php");
 
